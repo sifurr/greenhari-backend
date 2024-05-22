@@ -26,6 +26,9 @@ const productSchema = new Schema<TProduct>({
   inventory: { type: inventorySchema, required: true },
 });
 
+// define text index for full text search based on name and description fields
+productSchema.index({ name: 'text', description: 'text' });
+
 export const ProductModel = model<TProduct, IProductModel>(
   'Product',
   productSchema,

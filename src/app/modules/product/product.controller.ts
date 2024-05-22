@@ -6,7 +6,8 @@ const createProduct = async (req: Request, res: Response) => {
   try {
     const product = req.body;
     const validatedProduct = productValidationSchema.parse(product);
-    const result = await ProductServices.createSingleProduct(validatedProduct);
+    const result =
+      await ProductServices.createSingleProductIntoDB(validatedProduct);
     res.status(200).json({
       success: true,
       message: 'Product created successfully!',
@@ -23,12 +24,21 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getProducts = async (req: Request, res: Response) => {
   try {
-    const result = await ProductServices.getProducts();
-    res.status(200).json({
-      success: true,
-      message: 'Products fetched successfully!',
-      data: result,
-    });
+    const searchTerm = req.query.searchTerm as string;
+    const result = await ProductServices.getProductsFromDB(searchTerm);
+    if (searchTerm) {
+      res.status(200).json({
+        success: true,
+        message: `Products matching search term ${searchTerm} fetched successfully!`,
+        data: result,
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: `Products list fetched successfully!`,
+        data: result,
+      });
+    }
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -41,7 +51,7 @@ const getProducts = async (req: Request, res: Response) => {
 const getProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
-    const result = await ProductServices.getProduct(productId);
+    const result = await ProductServices.getProductFromDB(productId);
     res.status(200).json({
       success: true,
       message: 'Product fetched successfully!',
@@ -82,8 +92,8 @@ const updateProduct = async (req: Request, res: Response) => {
 const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
-    // get the product   
-    const findProduct = await ProductServices.getProduct(productId);
+    // get the product
+    const findProduct = await ProductServices.getProductFromDB(productId);
     // check if the product exists or not
     if (findProduct) {
       await ProductServices.deleteProductFromDB(productId);

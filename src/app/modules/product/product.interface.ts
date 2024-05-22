@@ -21,4 +21,5 @@ export type TProduct = {
 };
 
 
+
 export type IProductModel = Model<TProduct>;

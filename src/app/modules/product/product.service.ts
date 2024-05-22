@@ -5,8 +5,14 @@ const createSingleProductIntoDB = async (product: TProduct) => {
   return await ProductModel.create(product);
 };
 
-const getProductsFromDB = async () => {
-  return await ProductModel.find();
+const getProductsFromDB = async (searchTerm?: string) => {
+  if (searchTerm && searchTerm !== '') {
+    return await ProductModel.find({     
+      $text: { $search: searchTerm },  
+    });
+  } else {
+    return await ProductModel.find();
+  }
 };
 
 const getProductFromDB = async (productId: string) => {
@@ -24,9 +30,9 @@ const deleteProductFromDB = async (productId: string) => {
 };
 
 export const ProductServices = {
-  createSingleProduct: createSingleProductIntoDB,
-  getProducts: getProductsFromDB,
-  getProduct: getProductFromDB,
+  createSingleProductIntoDB,
+  getProductsFromDB,
+  getProductFromDB,
   updateProductInDB,
   deleteProductFromDB,
 };
