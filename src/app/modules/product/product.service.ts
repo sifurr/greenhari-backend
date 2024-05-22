@@ -1,23 +1,27 @@
 import { TProduct } from './product.interface';
 import { ProductModel } from './product.model';
 
-const createSingleProduct = async (product: TProduct) => {
-  const result = await ProductModel.create(product);
-  return result;
+const createSingleProductIntoDB = async (product: TProduct) => {
+  return await ProductModel.create(product);
 };
 
-const getProducts = async () => {
-  const result = await ProductModel.find();
-  return result;
+const getProductsFromDB = async () => {
+  return await ProductModel.find();
 };
 
-const getProduct = async (productId: string) => {
-  const result = await ProductModel.findById(productId);
-  return result;
+const getProductFromDB = async (productId: string) => {
+  return await ProductModel.findById(productId);
+};
+
+const updateProductInDB = async (productId: string, updateData: TProduct) => {
+  return await ProductModel.findByIdAndUpdate(productId, updateData, {
+    new: true,
+  });
 };
 
 export const ProductServices = {
-  createSingleProduct,
-  getProducts,
-  getProduct,
+  createSingleProduct: createSingleProductIntoDB,
+  getProducts: getProductsFromDB,
+  getProduct: getProductFromDB,
+  updateProductInDB,
 };

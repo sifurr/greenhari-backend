@@ -38,9 +38,9 @@ const getProducts = async (req: Request, res: Response) => {
   }
 };
 
-const getProduct = async (req: Request, res: Response)=>{
+const getProduct = async (req: Request, res: Response) => {
   try {
-    const {productId} = req.params;
+    const { productId } = req.params;
     const result = await ProductServices.getProduct(productId);
     res.status(200).json({
       success: true,
@@ -54,10 +54,34 @@ const getProduct = async (req: Request, res: Response)=>{
       error: err,
     });
   }
-}
+};
+
+const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const {productId} = req.params; 
+    const updateData = req.body;
+    const validatedData = productValidationSchema.parse(updateData);
+    const result = await ProductServices.updateProductInDB(productId, validatedData);    
+    res.status(200).json({
+      success: true,
+      message: 'Product updated successfully!',
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err || 'Something went wrong!',
+      error: err,
+    });
+  }
+};
+
+
 
 export const ProductControllers = {
   createProduct,
   getProducts,
-  getProduct
+  getProduct,
+  updateProduct,
+  deleteProduct
 };
