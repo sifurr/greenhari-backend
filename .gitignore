@@ -133,3 +133,4 @@ dist
 # custom
 sample-data.json
 miscellaneous
+.vercel
