@@ -21,6 +21,34 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+const getOrders = async (req: Request, res: Response) => {
+  try {
+    const userEmail = req.query.email as string;
+    if (userEmail && typeof userEmail === 'string') {
+      const result = await OrderServices.getOrdersFromDB(userEmail);
+      res.status(200).json({
+        success: true,
+        message: `Orders fetched successfully for user email ${userEmail}!`,
+        data: result,
+      });
+    } else {
+      const result = await OrderServices.getOrdersFromDB(userEmail);
+      res.status(200).json({
+        success: true,
+        message: `Orders fetched successfully!`,
+        data: result,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err || 'Something went wrong!',
+      data: err,
+    });
+  }
+};
+
 export const OrderControllers = {
   createOrder,
+  getOrders,
 };
