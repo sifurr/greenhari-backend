@@ -8,7 +8,7 @@ async function main() {
     await mongoose.connect(config.database_url as string);
     
     // create index for the product collection
-    await ProductModel.createIndexes();
+    await ProductModel.createIndexes();    
     
     app.listen(config.port, () => {
       console.log(`App Polli Hut is listening on port ${config.port}`);
