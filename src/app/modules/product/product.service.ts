@@ -7,8 +7,8 @@ const createSingleProductIntoDB = async (product: TProduct) => {
 
 const getProductsFromDB = async (searchTerm?: string) => {
   if (searchTerm && searchTerm !== '') {
-    return await ProductModel.find({     
-      $text: { $search: searchTerm },  
+    return await ProductModel.find({
+      $text: { $search: searchTerm },
     });
   } else {
     return await ProductModel.find();
@@ -16,7 +16,12 @@ const getProductsFromDB = async (searchTerm?: string) => {
 };
 
 const getProductFromDB = async (productId: string) => {
-  return await ProductModel.findById(productId);
+  const product = await ProductModel.findById(productId);
+  if (!product) {
+    throw new Error('No product');
+  } else {
+    return await ProductModel.findById(productId);
+  }
 };
 
 const updateProductInDB = async (productId: string, updateData: TProduct) => {

@@ -13,11 +13,17 @@ const createOrder = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err || 'Something went wrong!',
-      data: err,
-    });
+    if (err.message === 'Insufficient stock') {
+      res.status(400).json({
+        success: false,
+        message: 'Insufficient quantity available in inventory.',
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: 'Something went wrong!',
+      });
+    }
   }
 };
 

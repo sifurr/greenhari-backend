@@ -57,12 +57,13 @@ const getProduct = async (req: Request, res: Response) => {
       message: 'Product fetched successfully!',
       data: result,
     });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err || 'Something went wrong!',
-      error: err,
-    });
+  } catch (err: any) {
+    if (err.message === 'No product') {
+      res.status(500).json({
+        success: false,
+        message: 'Product not found!',
+      });
+    }
   }
 };
 

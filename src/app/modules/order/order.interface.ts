@@ -5,6 +5,7 @@ export type TOrder = {
   productId: string;
   price: number;
   quantity: number;
+  inStock?: boolean; 
 };
 
 export type IOrderModel = Model<TOrder>;
